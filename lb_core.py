@@ -7,7 +7,6 @@ from lb_assets import *
 from lb_menu import *
 
 
-
 # Open a standard window
 class Core(tk.Tk):
     def __init__(self, *args, **kwargs):
