@@ -3,6 +3,8 @@ from tkinter import ttk
 from PIL import Image, ImageTk
 import cv2
 import pickle
+from pyzbar import pyzbar
+import numpy as np
 
 from lb_assets import *
 import lb_firebase
@@ -92,21 +94,21 @@ def open_cam(self):
 # Checks for active camera then adds the QR scanner
 def update_video(self):
     if self.cam is not None:
-        self.detector = cv2.QRCodeDetector() 
         ret, cam_image = self.cam.read()
 
         if ret == True:
-            # The method to read the QR code by detetecting the bounding box coords and decoding the hidden QR data 
-            data, bbox, ret = self.detector.detectAndDecode(cam_image)
-            # This will draw a Blue Box to target the QR
-            if(bbox is not None):
-                bb_pts =bbox.astype(int).reshape(-1,2)
-                num_bb_pts = len(bb_pts)
-                for i in range(num_bb_pts):
-                    cv2.line(cam_image, tuple(bb_pts[i]), tuple(bb_pts[(i+1) % num_bb_pts]), color=(255,0, 0), thickness=2)
-                ######## REMOVE ########## adds QR decoded text to the video 
-                cv2.putText(cam_image, data, (int(bb_pts[0][0]), int(bb_pts[0][1]) - 10), cv2.FONT_HERSHEY_SIMPLEX,0.5, (255, 250, 120), 2)
-                ############################################################
+            # The method to read the QR code by detecting the bounding box coords and decoding the hidden QR data 
+            gray_image = cv2.cvtColor(cam_image, cv2.COLOR_BGR2GRAY)  # Convert image to grayscale
+            self.detector = pyzbar.decode(gray_image)
+            
+            if self.detector:
+                for qr_code in self.detector:
+                    data = qr_code.data.decode('utf-8')
+                    pts = np.array([qr_code.polygon], np.int32)
+                    pts = pts.reshape((-1, 1, 2))
+                    cv2.polylines(cam_image, [pts], True, (255, 100, 5), 2)
+                    cv2.putText(cam_image, data, (50, 50), cv2.FONT_HERSHEY_PLAIN, 1.5, (255, 100, 5), 2)
+
                 if data:
                     # splits the qr code data
                     processedData = data.split()               
@@ -124,6 +126,7 @@ def update_video(self):
             # continually passes images to the bodyScreen frame to create video 
             self.update_video_img(cam_image)
             self.bodyScreen.after(frameRate, lambda: update_video(self))
+
 
 # stops and releases camera
 def delete_img(self):
