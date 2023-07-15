@@ -35,7 +35,7 @@ def locker_state(self):
     for key, value in lockers.items():
         # image resizer cos tkinter is a lil bitch when it comes to images
         locker_state_img = Image.open(f'{value}.png')
-        locker_resizer = locker_state_img.resize((50, 75), Image.ANTIALIAS)
+        locker_resizer = locker_state_img.resize((50, 75))
         resized_locker_img = ImageTk.PhotoImage(locker_resizer)
         # creates a label frame for each of the keys in lockertest.dat
         locker_label = tk.Label(lockerBank, text=key, image=resized_locker_img)

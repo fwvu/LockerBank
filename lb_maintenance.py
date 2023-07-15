@@ -37,7 +37,7 @@ class lbMaintenance(tk.Frame):
 
     def hold_img(self):
         appBodyimg = Image.open(holdImg)
-        appBodyimg = appBodyimg.resize((bodySizeX, bodySizeY), Image.ANTIALIAS)
+        appBodyimg = appBodyimg.resize((bodySizeX, bodySizeY))
         self.appBodyimg = ImageTk.PhotoImage(appBodyimg)
 
         self.bodyScreen.configure(image=self.appBodyimg)

@@ -51,7 +51,7 @@ class lbOperational(tk.Frame):
         self.clear_bodyScreen()
         # initial hold image
         appBodyimg = Image.open(holdImg)
-        appBodyimg = appBodyimg.resize((bodySizeX, bodySizeY), Image.ANTIALIAS)
+        appBodyimg = appBodyimg.resize((bodySizeX, bodySizeY))
         self.appBodyimg = ImageTk.PhotoImage(appBodyimg)
 
         self.bodyScreen.configure(image=self.appBodyimg)
@@ -62,7 +62,7 @@ class lbOperational(tk.Frame):
         # pass cam_image into label frame
         cam_image = cv2.cvtColor(cam_image, cv2.COLOR_BGR2RGB)
         cam_image_converted = Image.fromarray(cam_image)
-        cam_image_converted = cam_image_converted.resize((bodySizeX, bodySizeY), Image.ANTIALIAS)
+        cam_image_converted = cam_image_converted.resize((bodySizeX, bodySizeY))
 
         self.cam_image_converted = ImageTk.PhotoImage(cam_image_converted)
         self.bodyScreen.configure(image=self.cam_image_converted)
