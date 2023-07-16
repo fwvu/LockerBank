@@ -5,9 +5,12 @@ import cv2
 import pickle
 from pyzbar import pyzbar
 import numpy as np
+from gpiozero import AngularServo
+from time import sleep
 
 from lb_assets import *
 import lb_firebase
+#import lb_pi_control
 
 
 ###--- LOCKER CODE ---####
@@ -55,6 +58,7 @@ def locker_state(self):
 
     # passes userID and chosen locker to firebase fuction
     lb_firebase.firebase_deposit(userId, chosenLocker)
+    pi_open_locker(chosenLocker)
     
 
 # cycles through the saved file "lockertest.dat" and change the first empty value to avail   
@@ -77,10 +81,30 @@ def locker_reset(self):
     print(lockers)
     close_cam(self)
 
+
+
 ###--- PI CODE ---###
 
-def pi_open_locker():
-    pass
+def pi_open_locker(locker):
+    _lockerNum = locker.split()
+    lockerNum = _lockerNum[1]
+    # can alter lockerNum to match used GPIO pin
+    print(lockerNum)
+
+    lockerNum = 15
+
+            # call      # GPIO      # start freq          # stop freq
+    servo = AngularServo(lockerNum, min_pulse_width=minpw, max_pulse_width=maxpw)
+
+    servo.angle = 90
+    sleep(2)
+    servo.angle = 0
+    sleep(2)
+    servo.angle = -90
+    sleep(2)
+    
+    #restart_full(self)
+    
 
 
 ###--- CAMERA CODE ---###
@@ -88,7 +112,7 @@ def pi_open_locker():
 # Opens camera 
 def open_cam(self):
     delete_img(self)
-    self.cam = cv2.VideoCapture(0, cv2.CAP_DSHOW)
+    self.cam = cv2.VideoCapture(0)
     update_video(self)
 
 # Checks for active camera then adds the QR scanner
@@ -118,7 +142,8 @@ def update_video(self):
                         global userId
                         userId = processedData[1] 
                         # triggers locker select function
-                        locker_select(self) 
+                        locker_select(self)
+                        #valid_user(self)
                     # if the QR decodes Maintenance it will perform a locker reset
                     elif processedData[0] == "Food_For_Dirt_Maintenance":                        
                         locker_reset(self)
@@ -143,6 +168,15 @@ def close_cam(self):
     self.clear_bodyScreen()
     self.hold_img()
 
+def restart_full(self):
+    close_cam(self)
+    sleep(1)
+    open_cam(self)
 
 
-
+def valid_user(self):
+    locker_select(self)
+    sleep(5)
+    restart_full(self)
+    
+    

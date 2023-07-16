@@ -28,8 +28,11 @@ class lbOperational(tk.Frame):
 
         startButton = ttk.Button(self.footer, text="Full Test",  command=lambda: open_cam(self))
         startButton.grid(row=1, column=0, pady=20, padx=30)
+        
+        restartButton = ttk.Button(self.footer, text="restart Test",  command=lambda: restart_full(self))
+        restartButton.grid(row=1, column=1, pady=20, padx=30)
 
-        resetButton = ttk.Button(self.footer, text="Reset",  command=lambda: close_cam(self))
+        resetButton = ttk.Button(self.footer, text="Stop",  command=lambda: close_cam(self))
         resetButton.grid(row=1, column=2, pady=20, padx=30)
 
         checkButton = ttk.Button(self.footer, text="Locker State",  command=lambda: locker_select(self))

@@ -17,7 +17,7 @@ class Core(tk.Tk):
 
         # HEADER
         self.appName = tk.Label(self, text=appTitle, font="courier 40 bold", background=appGreen)
-        self.appName.pack(pady=20)
+        self.appName.pack(side="top", fill="both", expand=True)
 
         # creating a frame and assigning it to container
         container = tk.Frame(self, height=400, width=600)
@@ -52,6 +52,6 @@ if __name__ == "__main__":
     app = Core()       
     app.title(appTitle)
     app.geometry(f'{mainWinSizeX}x{mainWinSizeY}')
-    app.iconbitmap(iconImg)
+    #app.iconbitmap(iconImg)
     app.config(bg=appGreen)
     app.mainloop()

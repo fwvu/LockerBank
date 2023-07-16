@@ -11,5 +11,7 @@ bodySizeX = 640
 bodySizeY = 480
 lockerTotal = 6
 frameRate = 10
+minpw = 0.0006
+maxpw = 0.0020
 
 processedData = ""

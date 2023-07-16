@@ -1,5 +1,5 @@
 #   pip install gpiozero
-# from gpiozero import AngularServo
+from gpiozero import AngularServo
 
 from time import sleep
 
@@ -7,13 +7,53 @@ from time import sleep
 
 # alter frequencies to servo manufacturers specs
 minpw = 0.0006
-maxpw = 0.0023
+maxpw = 0.0020
 
 def pi_open_locker(locker):
     _lockerNum = locker.split()
     lockerNum = _lockerNum[1]
     # can alter lockerNum to match used GPIO pin
     print(lockerNum)
+    
+    lockerNum = 15
+
+            # call      # GPIO      # start freq          # stop freq
+    servo = AngularServo(lockerNum, min_pulse_width=minpw, max_pulse_width=maxpw)
+
+
+    servo.angle = 90
+    sleep(2)
+    servo.angle = 0
+    sleep(2)
+    servo.angle = -90
+    sleep(2)
+
+
+#pi_open_locker("locker 15")
+
+
+
+
+
+
+# just PI can control 2 9gm servo
+# Adafruit HAT for Raspberry Pi required to control 16 servos
+# The Code is importing from a library called "gpiozero"
+
+
+"""
+
+# alter frequencies to servo manufacturers specs
+minpw = 0.0006
+maxpw = 0.0020
+
+def pi_open_locker(locker):
+    _lockerNum = locker.split()
+    lockerNum = _lockerNum[1]
+    # can alter lockerNum to match used GPIO pin
+    print(lockerNum)
+    
+    lockerNum = 15
 
             # call      # GPIO      # start freq          # stop freq
     servo = AngularServo(lockerNum, min_pulse_width=minpw, max_pulse_width=maxpw)
@@ -27,19 +67,12 @@ def pi_open_locker(locker):
         sleep(2)
 
 
-pi_open_locker("locker 12")
+pi_open_locker("locker 15")
 
 
 
 
 
-
-# just PI can control 2 9gm servo
-# Adafruit HAT for Raspberry Pi required to control 16 servos
-# The Code is importing from a library called "gpiozero"
-
-
-"""
 # 9gram servo motor - viable for prototype of 2 servos 
 
 servo = AngularServo(18, min_pulse_width=0.0006, max_pulse_width=0.0023)
