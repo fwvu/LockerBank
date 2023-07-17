@@ -205,9 +205,9 @@ def restart_full(self):
     open_cam(self)
 
 
+# Function to automate process
 def valid_user(self):
-    locker_select(self)
-    sleep(5)
-    restart_full(self)
-    
-    
+    self.after(1000, locker_select, self)
+    self.after(2000, locker_state, self)
+    self.after(3000, lb_firebase.firebase_deposit, userId, chosenLocker)
+    self.after(4000, pi_open_locker, chosenLocker)

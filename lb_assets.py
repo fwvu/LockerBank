@@ -15,3 +15,4 @@ minpw = 0.0006
 maxpw = 0.0020
 
 processedData = ""
+chosenLocker = ""
