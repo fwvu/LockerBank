@@ -79,8 +79,39 @@ def locker_reset(self):
         lockers.update({"locker " + str(lockerNumber) : "empty"})
     pickle.dump(lockers, open('lockertest.dat', 'wb'))
     print(lockers)
-    close_cam(self)
+    #close_cam(self)
+    delete_img(self)
+    self.clear_bodyScreen()
+    
+    # opens the current lockertest.dat file and adds it to a dictionary
+    lockers = {}
+    lockers = pickle.load(open('lockertest.dat', 'rb'))
+    
+    # welcome msg should be added to assests
+    reset_msg = "\n Lockers Reset \n \n \n "
 
+    # creates a label frame so grid can by used
+    lockerMessage = tk.Label(self.bodyScreen, text=reset_msg)
+    lockerMessage.pack(side="top", fill="both", expand=True)
+
+    lockerBank = tk.Label(self.bodyScreen)
+    lockerBank.pack(side="top", fill="both", expand=True)
+    
+    locker_column = 0
+    for key, value in lockers.items():
+        # image resizer cos tkinter is a lil bitch when it comes to images
+        locker_state_img = Image.open(f'{value}.png')
+        locker_resizer = locker_state_img.resize((50, 75))
+        resized_locker_img = ImageTk.PhotoImage(locker_resizer)
+        # creates a label frame for each of the keys in lockertest.dat
+        locker_label = tk.Label(lockerBank, text=key, image=resized_locker_img)
+        # adds the resized image taken from value in lockertest.dat
+        locker_label.image = resized_locker_img
+        locker_label.grid(row=0,column=locker_column, padx=20, pady=5 )
+        locker_column += 1
+
+    lockerAssignMessage = tk.Label(self.bodyScreen, text="\nAll lockers are reset to empty\n\n Have a nice day.", font=("Arial", 25))
+    lockerAssignMessage.pack(side="top", fill="both", expand=True)
 
 
 ###--- PI CODE ---###

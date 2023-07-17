@@ -29,18 +29,21 @@ class lbOperational(tk.Frame):
         startButton = ttk.Button(self.footer, text="Full Test",  command=lambda: open_cam(self))
         startButton.grid(row=1, column=0, pady=20, padx=30)
         
-        restartButton = ttk.Button(self.footer, text="restart Test",  command=lambda: restart_full(self))
+        restartButton = ttk.Button(self.footer, text="Restart Test",  command=lambda: restart_full(self))
         restartButton.grid(row=1, column=1, pady=20, padx=30)
 
-        resetButton = ttk.Button(self.footer, text="Stop",  command=lambda: close_cam(self))
-        resetButton.grid(row=1, column=2, pady=20, padx=30)
+        stopButton = ttk.Button(self.footer, text="Stop",  command=lambda: close_cam(self))
+        stopButton.grid(row=1, column=2, pady=20, padx=30)
 
-        checkButton = ttk.Button(self.footer, text="Locker State",  command=lambda: locker_select(self))
-        checkButton.grid(row=1, column=3, pady=20, padx=30)
+        checkButton = ttk.Button(self.footer, text="Force Select",  command=lambda: locker_select(self))
+        checkButton.grid(row=2, column=1, pady=20, padx=30)
+
+        resetButton = ttk.Button(self.footer, text="Reset Lockers",  command=lambda: locker_reset(self))
+        resetButton.grid(row=2, column=2, pady=20, padx=30)
 
 
-        switch_window_button = ttk.Button(self.footer, text="Maintenance", command=lambda: controller.show_frame('lbMaintenance'))
-        switch_window_button.grid(row=2, column=2, pady=20, padx=30)
+        #switch_window_button = ttk.Button(self.footer, text="Maintenance", command=lambda: controller.show_frame('lbMaintenance'))
+        #switch_window_button.grid(row=2, column=2, pady=20, padx=30)
 
         ##################################
    
