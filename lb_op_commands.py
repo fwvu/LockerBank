@@ -10,7 +10,6 @@ from time import sleep
 
 from lb_assets import *
 import lb_firebase
-#import lb_pi_control
 
 
 ###--- LOCKER CODE ---####
@@ -64,12 +63,30 @@ def locker_state(self):
 # cycles through the saved file "lockertest.dat" and change the first empty value to avail   
 def locker_select(self):
     lockers = pickle.load(open('lockertest.dat', 'rb'))
+    found_empty = False
+    # TEST ON PI - chosenLocker = None
+
     for key, value in lockers.items():
         if value == "empty":
             lockers[key] = "avail"
-            pickle.dump(lockers, open('lockertest.dat', 'wb'))
+            found_empty = True
             break
-    locker_state(self)
+
+    if found_empty:
+        pickle.dump(lockers, open('lockertest.dat', 'wb'))
+        locker_state(self)
+        # TEST ON PI - if chosenLocker:
+        # TEST ON PI -     pi_open_locker(chosenLocker)
+    else:
+        lockers_full(self)
+
+# All lockers full display
+def lockers_full(self):
+    delete_img(self)
+    self.clear_bodyScreen()
+    lockerMessage = tk.Label(self.bodyScreen, text="\nAll lockers are FULL\n\n Call maintenance\n\nHave a nice day.", font=("Arial", 25))
+    lockerMessage.pack(side="top", fill="both", expand=True)
+
 
 # locker reset function
 def locker_reset(self):  
@@ -79,7 +96,6 @@ def locker_reset(self):
         lockers.update({"locker " + str(lockerNumber) : "empty"})
     pickle.dump(lockers, open('lockertest.dat', 'wb'))
     print(lockers)
-    #close_cam(self)
     delete_img(self)
     self.clear_bodyScreen()
     
@@ -87,7 +103,7 @@ def locker_reset(self):
     lockers = {}
     lockers = pickle.load(open('lockertest.dat', 'rb'))
     
-    # welcome msg should be added to assests
+    # reset msg should be added to assests
     reset_msg = "\n Lockers Reset \n \n \n "
 
     # creates a label frame so grid can by used
@@ -121,7 +137,7 @@ def pi_open_locker(locker):
     lockerNum = _lockerNum[1]
     # can alter lockerNum to match used GPIO pin
     print(lockerNum)
-
+    # hardset to 15 for testing because we only have 1 servo
     lockerNum = 15
 
             # call      # GPIO      # start freq          # stop freq
@@ -168,7 +184,7 @@ def update_video(self):
                     # splits the qr code data
                     processedData = data.split()               
                     # check the first part of the QR code contains food_for_dirt
-                    if processedData[0] == "Food_For_Dirt":
+                    if processedData[0] == qrId:
                         # creates a global userID so it can be passed when locker is selected
                         global userId
                         userId = processedData[1] 
@@ -176,7 +192,7 @@ def update_video(self):
                         locker_select(self)
                         #valid_user(self)
                     # if the QR decodes Maintenance it will perform a locker reset
-                    elif processedData[0] == "Food_For_Dirt_Maintenance":                        
+                    elif processedData[0] == maintenanceId:                        
                         locker_reset(self)
 
             # continually passes images to the bodyScreen frame to create video 

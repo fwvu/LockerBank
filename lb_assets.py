@@ -16,3 +16,5 @@ maxpw = 0.0020
 
 processedData = ""
 chosenLocker = ""
+qrId = "Food_For_Dirt"
+maintenanceId = "Food_For_Dirt_Maintenance"
