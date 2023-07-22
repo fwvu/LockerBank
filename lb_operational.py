@@ -35,6 +35,9 @@ class lbOperational(tk.Frame):
         stopButton = ttk.Button(self.footer, text="Stop",  command=lambda: close_cam(self))
         stopButton.grid(row=1, column=2, pady=20, padx=30)
 
+        lockerClose = ttk.Button(self.footer, text="Locker Close",  command=lambda: pi_close_locker(self))
+        lockerClose.grid(row=2, column=0, pady=20, padx=30)
+
         checkButton = ttk.Button(self.footer, text="Force Select",  command=lambda: locker_select(self))
         checkButton.grid(row=2, column=1, pady=20, padx=30)
 

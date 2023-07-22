@@ -5,7 +5,7 @@ import cv2
 import pickle
 from pyzbar import pyzbar
 import numpy as np
-from gpiozero import AngularServo
+#from gpiozero import AngularServo
 from time import sleep
 
 from lb_assets import *
@@ -143,15 +143,23 @@ def pi_open_locker(locker):
             # call      # GPIO      # start freq          # stop freq
     servo = AngularServo(lockerNum, min_pulse_width=minpw, max_pulse_width=maxpw)
 
-    servo.angle = 90
-    sleep(2)
     servo.angle = 0
     sleep(2)
     servo.angle = -90
     sleep(2)
-    
+
     #restart_full(self)
     
+def pi_close_locker(self):
+    lockerNum = 15
+
+            # call      # GPIO      # start freq          # stop freq
+    servo = AngularServo(lockerNum, min_pulse_width=minpw, max_pulse_width=maxpw)
+
+    servo.angle = -90
+    sleep(2)
+    servo.angle = 0
+    sleep(2)
 
 
 ###--- CAMERA CODE ---###
